@@ -39,3 +39,23 @@ move_disks(1, Source, Destination) :-
 %Prakriti Pokhare
 
 
+
+Objective: Write a prolog program to find the family relation.
+Source code:
+% Family relationships
+parent('Punam', 'Prakriti').
+parent('Punam', 'Sita').
+parent('Sita', 'Ram').
+female('Punam').
+female('Prakriti').
+female('Sita').
+male('Ram').
+% Rules
+father(X, Y) :- parent(X, Y), male(X).
+mother(X, Y) :- parent(X, Y), female(X).
+sibling(X, Y) :- parent(Z, X), parent(Z, Y), X \= Y.
+grandparent(X, Y) :- parent(X, Z), parent(Z, Y).
+% Prakriti Pokharel
+Output:
+
+
