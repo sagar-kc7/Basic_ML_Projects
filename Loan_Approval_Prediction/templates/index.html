@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loan Approval Prediction</title>
+  </head>
+  <body>
+    <h2>Loan Approval Prediction Form</h2>
+    <form id="loanForm">
+      <label>No. of Dependents:</label>
+      <input type="number" name="no_of_dependents" required /><br /><br />
+
+      <label>Education:</label>
+      <select name="education">
+        <option value="Graduate">Graduate(0)</option>
+        <option value="Not Graduate">Not Graduate(1)</option></select
+      ><br /><br />
+
+      <label>Self Employed:</label>
+      <select name="self_employed">
+        <option value="Yes">Yes(1)</option>
+        <option value="No">No(0)</option></select
+      ><br /><br />
+
+      <label>Annual Income:</label>
+      <input type="number" name="income_annum" required /><br /><br />
+
+      <label>Loan Amount:</label>
+      <input type="number" name="loan_amount" required /><br /><br />
+
+      <label>Loan Term (Months):</label>
+      <input type="number" name="loan_term" required /><br /><br />
+
+      <label>CIBIL Score:</label>
+      <input type="number" name="cibil_score" required /><br /><br />
+
+      <label>Residential Assets Value:</label>
+      <input
+        type="number"
+        name="residential_assets_value"
+        required
+      /><br /><br />
+
+      <label>Commercial Assets Value:</label>
+      <input
+        type="number"
+        name="commercial_assets_value"
+        required
+      /><br /><br />
+
+      <label>Luxury Assets Value:</label>
+      <input type="number" name="luxury_assets_value" required /><br /><br />
+
+      <label>Bank Asset Value:</label>
+      <input type="number" name="bank_asset_value" required /><br /><br />
+
+      <button type="submit">Predict Loan Status</button>
+    </form>
+
+    <h3>Prediction Result:</h3>
+    <p id="result"></p>
+
+    <script>
+      document
+        .getElementById("loanForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent form from refreshing the page
+
+          // Get form data
+          const formData = new FormData(event.target);
+          const data = {};
+          formData.forEach((value, key) => {
+            data[key] = isNaN(value) ? value : Number(value);
+          });
+
+          // Send API request
+          fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById("result").innerText =
+                "Loan Status: " + data.loan_status;
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+    </script>
+  </body>
+</html>
